@@ -1,0 +1,40 @@
+micronaut:
+  application:
+    name: contracts
+  server:
+    context-path: /api/ms/contracts
+  router:
+    versioning:
+      enabled: true
+      default-version: 1
+      header:
+        enabled: true
+        names:
+          - 'X-API-VERSION'
+          - 'Accept-Version'
+      parameter:
+        enabled: false
+datasources:
+  default:
+    url: jdbc:postgresql://${DB_HOST:`localhost`}:${DB_PORT:`5432`}/${DB_NAME:`contracts`}?socketTimeout=60
+    username: ${DB_USER:`docker`}
+    password: ${DB_PASSWORD:`docker`}
+    driverClassName: 'org.postgresql.Driver'
+    maximumPoolSize: 5
+    max-lifetime: 600000
+    connection-timeout: 1000
+jpa:
+  default:
+    packages-to-scan:
+      - 'edu.eci.models'
+    properties:
+      hibernate:
+        show_sql: false
+flyway:
+  datasources:
+    default:
+      locations: classpath:migrations
+      baseline-on-migrate: false
+kafka:
+  bootstrap:
+    servers: ${KAFKA_HOST_ARRAY:`localhost:9092`}
